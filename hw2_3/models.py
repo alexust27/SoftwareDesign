@@ -1,7 +1,7 @@
 import datetime
 from collections import defaultdict
 
-TIME_FORMAT = "%m/%d/%Y"
+TIME_FORMAT = "%d/%m/%Y"
 
 
 class Pass:

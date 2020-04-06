@@ -19,7 +19,7 @@ class PassRepository(mongo_repository_base.FitnessDB):
         return converted
 
     def update(self, pass_: Pass):
-        result = self.c().find_one_and_update({"pass_id": pass_.get_id()}, pass_.__dict__)
+        result = self.c().find_one_and_replace({"pass_id": pass_.get_id()}, pass_.__dict__)
         if result is None:
             return None
 

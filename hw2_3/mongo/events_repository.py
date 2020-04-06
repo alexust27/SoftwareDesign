@@ -10,12 +10,9 @@ class EventsRepository(mongo_repository_base.FitnessDB):
         collection_name = "events"
 
     def get_all_evensts(self):
-        print("get all events")
         events = self.c().find().sort([("time", pymongo.ASCENDING)])
         if events.cursor_id is None:
             return []
-        for e in events:
-            print(e)
         converted = [self.convert_to_model(e) for e in events]
         return converted
 

@@ -8,7 +8,7 @@ class FitnessDB:
 
     def create(self, item):
         data = item.__dict__
-        self.c().insert(data)
+        self.c().insert_one(data)
         return item
 
     def convert_to_model(self, d):
@@ -16,3 +16,6 @@ class FitnessDB:
         x = self.Meta.model()
         x.__dict__.update(d)
         return x
+
+    def drop(self):
+        self.c().drop()
