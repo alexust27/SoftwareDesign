@@ -36,7 +36,7 @@ class TestApp(TestCase):
             "pass_id": 1,
             "finish": "1/12/2020"
         }
-        response = self.app.get('/manager/update', json=pass_dict_new)
+        response = self.app.post('/manager/update', json=pass_dict_new)
         self.assertEqual(response.status_code, StatusCode.OK)
 
     def test_user(self):
