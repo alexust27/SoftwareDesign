@@ -3,7 +3,6 @@ class FitnessDB:
         self.db = db
 
     def c(self):
-        print(self.Meta.collection_name)
         return getattr(self.db, self.Meta.collection_name)
 
     def create(self, item):

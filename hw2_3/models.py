@@ -1,7 +1,8 @@
 import datetime
 from collections import defaultdict
 
-TIME_FORMAT = "%d/%m/%Y"
+TIME_FORMAT = "%d/%m/%Y %H:%M"
+DATE_FORMAT = "%d/%m/%Y"
 
 
 class Pass:
@@ -75,12 +76,12 @@ class Statistic:
         return self.common_duration.total_seconds() / self.visits / 60
 
     def add_event(self, e):
-        self.report_by_day[e.get_time()].append(e)
+        self.report_by_day[e.get_time().strftime(DATE_FORMAT)].append(e)
 
     def get_report_by_days(self) -> str:
         res = ""
         for date, events in self.report_by_day.items():
-            res += date.strftime(TIME_FORMAT) + " : [\n"
+            res += date + " : [\n"
             for e in events:
                 res += str(e) + ",\n"
             res = res[:-2]
