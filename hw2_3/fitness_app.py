@@ -54,12 +54,14 @@ def get_info(pass_id):
 
 @app.route('/report/daily/', methods=['GET'])
 def daily_report():
-    pass
+    res = statistic.get_report_by_days()
+    return res
 
 
 @app.route('/report/total', methods=['GET'])
 def total_report():
-    pass
+    res = statistic.calc_visits_in_minutes()
+    return {"Average duration": f"{res} minutes per visit"}
 
 
 @app.route('/user/enter/', methods=['POST'])
@@ -75,6 +77,7 @@ def user_enter():
         return {"error": "You are already in"}
 
     event = Event(pass_id, ENTER, time=datetime.datetime.now())
+    statistic.add_event(event)
     Context.events.create(event)
     return jsonify(success=True)
 
@@ -93,6 +96,7 @@ def user_exit():
     Context.events.create(event)
 
     statistic.add_visit(exit_time - prev_event.get_time())
+    statistic.add_event(event)
     return jsonify(success=True)
 
 

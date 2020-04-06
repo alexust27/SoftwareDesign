@@ -1,4 +1,5 @@
 import datetime
+from collections import defaultdict
 
 TIME_FORMAT = "%m/%d/%Y"
 
@@ -58,7 +59,9 @@ class Statistic:
         self.common_duration = datetime.timedelta(0)
         self.visits = 0
         saved_e = None
+        self.report_by_day = defaultdict(list)
         for e in events:
+            self.add_event(e)
             if e.get_event_type() == ENTER:
                 saved_e = e
             if e.get_event_type() == EXIT:
@@ -68,5 +71,19 @@ class Statistic:
         self.visits += 1
         self.common_duration += duration
 
-    def calc_visits(self):
-        return self.common_duration / self.visits
+    def calc_visits_in_minutes(self):
+        return self.common_duration.total_seconds() / self.visits / 60
+
+    def add_event(self, e):
+        self.report_by_day[e.get_time()].append(e)
+
+    def get_report_by_days(self) -> str:
+        res = ""
+        for date, events in self.report_by_day.items():
+            res += date.strftime(TIME_FORMAT) + " : [\n"
+            for e in events:
+                res += str(e) + ",\n"
+            res = res[:-2]
+            res += "\n ],\n"
+        res = res[:-2]
+        return res
