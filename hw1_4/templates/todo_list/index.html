@@ -1,0 +1,61 @@
+{% load static %}
+<html lang="ru">
+<head>
+{#    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">#}
+{#        <link rel="stylesheet" href="{% static 'todo_list/styles.css' %}">#}
+    <title>TODO_LIST</title>
+</head>
+<header>
+    <b>СПИСОК ДЕЛ</b>
+</header>
+<body>
+
+<div id="todo-app">
+    <label class="todo-label" for="new-todo">Добавить новый список:</label>
+
+    <form action="{% url 'create_tb' %}" method="POST" role="form">
+        {% csrf_token %}
+        <div>
+            {{ form.text }}
+        </div>
+    </form>
+    <ul id="lists">
+        {% for key, values in lists.items %}
+            <li>
+                <div>{{ key }}</div>
+                <a href="{% url 'remove_list' key %}">
+                    <button>
+                        Удалить список
+                    </button>
+                </a>
+                <ul id="todo-list">
+                    {% for todo in values %}
+                        <li>
+                            <div>{{ todo.text }}</div>
+                            <label onclick="{% url 'complete' todo.id %}">
+                                {% if todo.completed %}
+                                    <input type="checkbox" checked>
+                                {% else %}
+                                    <input type="checkbox">
+                                {% endif %}
+                            </label>
+                        </li>
+                    {% endfor %}
+                    <label class="todo-label" for="new-todo">Добавить:</label>
+                    <form action="{% url 'add' key %}" method="POST" role="form">
+                        {% csrf_token %}
+                        <div>
+                            {{ form.text }}
+                        </div>
+                    </form>
+                </ul>
+            </li>
+
+        {% endfor %}
+    </ul>
+    <div id="todo-stats"></div>
+
+</div>
+
+</body>
+</html>
